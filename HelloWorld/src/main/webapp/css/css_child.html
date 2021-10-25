@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>css_child.html</title>
+    <style>
+        body>div>h3{
+            color: red;
+        }
+        body>p{
+            color: green;
+            background-color: yellow;
+        }
+        body>h3>tel>home{
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h3>Child Selector_1</h3>
+    </div>
+    <p>자식 선택자</p>
+    <h3>
+        <sno>123456</sno><br>
+        <std>홍민성</std><br>
+        <tel>
+            <office>02-4567-1010</office><br>
+            <home>010-1234-5678</home>
+        </tel>
+    </h3>
+</body>
+</html>
