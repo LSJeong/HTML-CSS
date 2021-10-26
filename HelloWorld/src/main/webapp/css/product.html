@@ -6,10 +6,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>css/product.html</title>
+    <style>
+        span.qna {
+            float: right;
+        }
+
+        div.d1>span,
+        div.d2>span {
+            display: inline-block;
+            text-align: center;
+            padding-top: 3px;
+        }
+
+        div.d1 {
+            background-color: rgb(206, 206, 206);
+            height: 30px;
+            margin-top: 9px;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            font-weight: bold;
+
+        }
+
+        span.page {
+            float: right;
+        }
+
+        span.sp {
+            font-size: 20px;
+            margin-left: 300px;
+
+        }
+    </style>
 </head>
 
 <body>
-    <div>
+    <div style="width: 800px;">
         <h2>상품 문의하기</h2>
         <select>
             <option value="제목" selected>제목</option>
@@ -17,12 +49,73 @@
         </select>
         <input type="text">
         <input type="submit" value="검색">
-        총 검색 결과 4건
-        <div id="qna" style="">
-            <input type="submit" value="문의하기">
-            내 문의보기
-            전체 문의보기
+        <span><small>총 검색 결과 4건</small></span>
+
+        <span class="qna">&nbsp; 내 문의보기&nbsp; | &nbsp; 전체 문의보기</span>
+        <span class="qna"><button type="button" value="문의하기">문의하기</button></span>
+
+        <div class="d1">
+            <span style="width: 60px;">번호 </span>
+            <span style="width: 100px;"> 문의종류</span>
+            <span style="width: 120px;">답변상태</span>
+            <span style="width: 220px;">제목</span>
+            <span style="width: 120px;">문의자</span>
+            <span style="width: 140px;">등록일</span>
+           
         </div>
+
+        <div class="d2">
+            <span style="width: 60px;">4 </span>
+            <span style="width: 100px;">배송</span>
+            <span style="width: 120px; color: skyblue;">답변완료</span>
+            <span style="width: 220px;">배송</span>
+            <span style="width: 120px;">b45******</span>
+            <span style="width: 140px;">2021.10.15</span>
+            <hr>
+        </div>
+
+        <div class="d2">
+            <span style="width: 60px;">3 </span>
+            <span style="width: 100px;">기타</span>
+            <span style="width: 120px; color: skyblue;">답변완료</span>
+            <span style="width: 220px;">기타 문의입니다. <img src="1.png" width="20px" height="20px"></span>
+            <span style="width: 120px;">bul*****</span>
+            <span style="width: 140px;">2021.10.07</span>
+            <hr>
+        </div>
+        <div class="d2">
+            <span style="width: 60px;">2 </span>
+            <span style="width: 100px;">상품</span>
+            <span style="width: 120px; color: skyblue;">답변완료</span>
+            <span style="width: 220px;">상품 문의입니다. <img src="1.png" width="20px" height="20px"> </span>
+            <span style="width: 120px;">hrh****</span>
+            <span style="width: 140px;">2021.10.06</span>
+            <hr>
+        </div>
+        <div class="d2">
+            <span style="width: 60px;">1 </span>
+            <span style="width: 100px;">상품</span>
+            <span style="width: 120px; color: skyblue;">답변완료</span>
+            <span style="width: 220px;">배송</span>
+            <span style="width: 120px;">dc3***</span>
+            <span style="width: 140px;">2021.08.29</span>
+            <hr>
+        </div>
+        <span class="sp" style="color: grey;">
+            <span><< &nbsp</span>
+            <span>< &nbsp </span>
+            <span style="color: skyblue; font-weight: bold; font-size: 30px;">① </span>
+            <span>> &nbsp</span>
+            <span>>> &nbsp</span>
+        </span>
+        <span class="page">
+            <select name="" id="">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+            1 page
+        </span>
+
     </div>
 </body>
 
