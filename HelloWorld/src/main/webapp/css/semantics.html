@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>css/semantics.html</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-size: 20px;
+            margin: 2px;
+            text-align: center;
+        }
+
+        header {
+            background-color: khaki;
+            height: 10vh;
+            border-radius: 20px;
+            border: 3px solid gray;
+            
+        }
+
+        nav {
+            float: left;
+            background-color: lemonchiffon;
+            width: 31%;
+            height: 30vh;
+            margin-right: 20px;
+            border-radius: 20px;
+            border: 3px solid gray;
+        }
+
+        section {
+            float: left;
+            background-color: lightblue;
+            width: 31%;
+            height: 30vh;
+            margin-right: 20px;
+            border-radius: 20px;
+            border: 3px solid gray;
+        }
+
+        aside {
+            float: left;
+            background-color: lightcoral;
+            width: 31%;
+            height: 30vh;
+            border-radius: 20px;
+            border: 3px solid gray;
+        }
+
+        footer {
+            clear: both;
+            background-color: lightgreen;
+            height: 10vh;
+            border-radius: 20px;
+            border: 3px solid gray;
+        }
+        .article{
+            background-color: lightcyan;
+            height: 15.5vh;
+            border-radius: 20px;
+            border: 3px solid gray;
+        }
+        .header1{
+            background-color: lightcyan;
+            height: 5vh;
+            border-radius: 20px;
+            border: 3px solid gray;
+        }
+        .footer1{
+            background-color: lightcyan;
+            height: 5vh;
+            border-radius: 20px;
+            border: 3px solid gray;
+        }
+    </style>
+</head>
+
+<body>
+    <header> &lt header &gt</header>
+    <nav> &lt nav &gt</nav>
+    <section>&lt section &gt
+        <header class="header1"> &lt header &gt</header>
+        <article class="article"> &lt article &gt </article>
+        <footer class="footer1">&lt footer &gt</footer>
+    </section>
+    <aside>&lt aside &gt</aside>
+    <footer>&lt footer &gt</footer>
+</body>
+
+</html>
