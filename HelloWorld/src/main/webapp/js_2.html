@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>js_2.html</title>
+</head>
+<body>
+    <script>
+        var num;
+        var obj=null;
+        document.write(typeof 100+"<br>");
+        document.write(typeof 10.5+"<br>");
+        document.write(typeof "홍길동"+"<br>");
+        document.write(typeof true+"<br>");
+        document.write(typeof [1,2,3]+"<br>");
+        document.write(typeof {name:'홍길동',age:25}+"<br>");
+        document.write(typeof num+"<br>");
+        document.write(typeof obj+"<br>");
+    </script>
+    <br>
+    <script>
+        var num = 10;
+        document.write("num 변수 : " + typeof num + " 타입<p/>");
+        document.write("--- 데이터 값 변경 후 ---<p/>");
+        var num="홍길동";
+        document.write("num 변수 : " + typeof num + " 타입<p/>");
+    </script>
+
+    <script>
+        stdName="홍길동";
+        comGrade=96;
+        var stdName;
+        var comGrade;
+        document.write("학생 이름 : " + stdName + "<br>");
+        document.write("컴퓨터 점수 : " + comGrade + "<br>");
+    </script>
+</body>
+</html>
