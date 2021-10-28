@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>javascript/dom.html</title>
+</head>
+<body>
+    <p id='message'>hello</p>
+    <ul id='fruit'>
+        <li>사과</li>
+        <li>바나나</li>
+        <li>체리</li>
+    </ul>
+
+    <script>
+        // console.log(this);
+        //엔터 친 공백이 text로 인식됨, index 잘 생각해야됨!!
+        // [0] = text , [1]이 p태그가 됨
+        console.log(document.body.childNodes[1]);
+        document.body.childNodes[1].innerHTML = '안녕하세요.';
+
+        // ul 밑의 첫번째 li
+        document.body.childNodes[3].childNodes[1].innerHTML = 'Apple';
+        // document.body.childNodes[3].childNodes[1].textContent = 'Apple'; 이렇게도 가능
+
+        let val = document.getElementById('message');
+        val.textContent = '반갑습니다.';
+        console.log(val);
+
+        let ul = document.getElementById('fruit');
+        console.log(ul.children[0].textContent); //childnode와 다르게 text 없음
+    </script>
+</body>
+</html>

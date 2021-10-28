@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>javascript/document.html</title>
+</head>
+<body>
+    <script>
+        var n1 = 20; //number
+        n1 = "20"; //string
+        n1 = true; 
+        n1 = null;
+        n1 = {
+            name: 'Hong',
+            age: 20
+        }
+        var ary = [n1, 'apple', 20, true]; // 다른타입도 배열에 넣을수 있음
+        for(var val of ary){
+            console.log(val);
+        }
+
+        document.write(n1.name);
+        document.write('<p>' + n1['age'] + '</p>');
+
+        console.log(n1);
+
+        function sum(){
+            var n1 = 10;
+            var n2 = 20;
+            console.log(n1 + n2);
+        }
+        
+        sum();
+
+        {
+            let n2 = 'val'; //블럭 내에서만 사용, 블록내에 같은 변수이름 선언안됨
+            var n1 = 'new'; //var는 블록안에서 선언해도 밖에서 사용가능
+        }
+        
+        {
+            let n2 = '20'; //변수
+            n2 = 20;
+            n2 = true;
+
+            const n3 = 30; //상수, 다른값으로 변경할 수 없음
+            // n3 = 40; //에러
+
+            const obj = {
+                name: 'Hong',
+                age: 20
+            }
+            // obj = {
+            //     name: 'Hwang',
+            //     age: 33
+            // };  //불가
+
+            obj.name = 'Hwnag';  // object타입 각 값은 변경 가능
+            obj['age'] = 23;
+
+            console.log(obj);
+        }
+
+        function showInfo(){
+            console.log('Hello, World');
+        }
+
+        //function 실행시 () 빼고 입력 => function 정의 구문을 그대로 출력
+        console.log(showInfo); 
+
+        let newFunc = showInfo; //function 정의구문 담기
+        console.log(newFunc);  //function 정의구문 출력
+        newFunc();  //function 실행
+
+        let showAnother = function(){
+            console.log('Nice, World');
+        }
+        console.log(showAnother);
+        showAnother();
+
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>javascript/string.html</title>
+</head>
+
+<body>
+    <script>
+        var str = 'Hello, World'; //string
+        // str = new String('Hello, World'); //object
+        console.log(typeof str);
+        console.log(str.length);
+
+        var strs = str.split(',');
+        console.log(strs[0]); //Hello
+
+        console.log(str[0]); // H
+
+        var result = str.slice(0, 4);
+        console.log(result); //Hell
+
+        result = str.substring(0, 5);
+        console.log(result); //Hello
+
+        result = str.substr(5, 3);
+        console.log(result); //, W
+
+        result = str.slice(-5, -1);
+        console.log(result); //Worl
+
+        let newStr = str.replace('Hello', 'Nice');
+        console.log(newStr); //Nice, World
+
+        newStr = str.toUpperCase();
+        console.log(newStr);
+
+        newStr = str.toLowerCase();
+        console.log(newStr);
+
+        let mins = ['950101-1234567', '970202-2345678', '0101233456789', '020202 4567890'];
+
+        function checkGender(mins) {
+            // var chk = mins.substr(6,1);
+            // if(chk == '-' || chk == ' '){
+            //     chk = mins.substr(7,1);
+            // }else{
+            //     chk = mins.substr(6,1);
+            // }
+
+            var chk = mins.replace(/[^0-9]/g,'');
+            chk = chk.replace(/ /gi, '');
+            // console.log(chk);
+            b = chk.substr(6, 1);
+            if (chk.length != 13) {
+                console.log('주민번호 잘못입력하셨습니다.');
+            } else {
+                if (b == 1 || b == 3) {
+                    console.log('남자입니다');
+                } else if (b == 2 || b == 4) {
+                    console.log('여자입니다');
+                } else {
+                    console.log('확인되지않은 성별입니다.');
+                }
+            }
+        }
+
+        checkGender(mins[0]);
+        checkGender(mins[1]);
+        checkGender(mins[2]);
+        checkGender(mins[3]);
+    </script>
+</body>
+
+</html>

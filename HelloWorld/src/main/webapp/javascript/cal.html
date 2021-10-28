@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>javascript/cal.html</title>
+    <style>
+        tr>th:nth-child(1),
+        tr>td:nth-child(1) {
+            color: red;
+        }
+
+        tr>th:nth-child(7),
+        tr>td:nth-child(7) {
+            color: skyblue;
+        }
+        thead {
+            background-color: rgb(173, 173, 173);
+        }
+        td{
+            width: 40px;
+            height: 35px;
+            text-align: right;
+            padding: 2%;
+        }
+        h1{
+            margin-left: 50px;
+        }        
+    </style>
+</head>
+
+<body>
+    <script>
+        function getLastDate(month) {
+            let last = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            return last[month];
+        }
+
+        let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
+
+        // 반복문 1~31까지
+        // <table border="1"><tbody><tr><td>1</td><td>2</td>...31</tr></tbody></table>
+        // 년/월
+        let year, month, lastDate;
+        year = 2021;
+        month = 12;
+        lastDate = getLastDate(12);
+        console.log(lastDate);
+
+        let today = new Date(year + '-' + month + '- 01');
+        let firstDay = today.getDay(); //요일 정보(일:0, 월:1, 화:2)
+        console.log(firstDay);
+
+        let str = '<h1>' + year + '년 ' + month + '월 </h1>';
+        str += '<table border="1">';
+        str += '<thead><tr>';
+        for (let day of days) {
+            str += '<th>' + day + '</th>';
+        }
+        str += '</tr></thead>';
+
+        str += '<tbody><tr>';
+        for (let i = 0; i < firstDay; i++) {
+            str += '<td></td>';
+        }
+        for (let i = 1; i <= lastDate; i++) {
+            str += '<td >' + i + '</td>';
+            if ((i + firstDay) % 7 == 0) {
+                str += '</tr><tr>';
+            }
+        }
+        str += '</tr></tbody></table>';
+        document.write(str);
+
+        let tds = document.querySelectorAll('td');
+        for (let td of tds) {
+            td.onmouseover = function () {
+                this.style.backgroundColor = 'yellow';
+                this.style.color = 'blue';
+            }
+            td.onmouseout = function () {
+                this.style.backgroundColor = null;
+                this.style.color = null;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
