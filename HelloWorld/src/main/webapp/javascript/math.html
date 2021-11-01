@@ -26,10 +26,20 @@
         console.log(randAry);
         let notDupAry = [];
         
+        // randAry.forEach(function(val, ind){
+        //     if(notDupAry.indexOf(val) == -1)
+        //         notDupAry.push(val);
+        // });       
+
         randAry.forEach(function(val, ind){
-            if(notDupAry.indexOf(val) == -1)
+            let bol = notDupAry.some(function (a,b){
+                return val == a;
+            })
+
+            if(!bol){
                 notDupAry.push(val);
-        });       
+            }
+        });
 
         console.log(notDupAry.sort(function(t,l){
             return t-l;
