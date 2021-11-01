@@ -33,11 +33,49 @@ const filterUsers = newUsers.filter(function(val,ind){  //filter: 참값만 retu
 console.clear();
 console.log(filterUsers);
 
-let resultAry = [];
-let sum = filterUsers.reduce(function(prevObj,curObj,ind,ary){  //prev:이전값, cur:현재값
-    console.log(prevObj,curObj.score);
-    return (prevObj + curObj.score);
-},0); //0: 초기값,  prev에 cur값을 더해서 누적시킴
-//초기값이 없으면 prev 요소를 초기값으로 잡음
-console.log(`합계 : ${sum}`);
+
+let sum = filterUsers.reduce(function(initVal,obj,ind,ary){  
+    console.log(initVal, obj, ind, ary);
+    initVal.push(obj);
+    return initVal;
+    // return initVal + obj.score;
+},[]); //  초기값지정(0, {} obj, [] 배열 도 올수있다)
+//참조값... a=3, a={}
+console.log(sum);
+
+let sum2 = function sum2(num1, num2){
+    return num1 + num2;
+}
+//arrow function
+sum2 = (num1, num2) => num1 + num2; //간단 표현
+
+let trueOrFalse = [45, 4, 9, 16, 25].every(function(val, ind, ary){   //.some 하나라도 만족하는게 있는지
+    return val > 10;  //모든 요소들이 만족하면 true, 아니면 false
+});
+console.log(trueOrFalse);
+
+const fruits = ['Apple','Orange','Apple','Mango'];
+console.log(fruits.indexOf('Apple'));
+console.log(fruits.lastIndexOf('Apple',1)); 
+console.log(fruits.includes('Apple')); //배열안에 이 값이 있는가? ture or false
+console.log(fruits.findIndex(function(val,ind,ary){
+    return val == 'Apple';
+})); 
+
+//문자열을 배열로 반환
+console.log(Array.from('ABCD'));
+console.log('A,B,C,D'.split(","));
+
+// console.log(fruits.keys());
+for(let x of fruits.keys()){
+    console.log(x);
+}
+
+// object에서는 keys() 못씀.. 배열은 가능..
+// let user1 = new User('user1','사용자1', 90);
+// console.log(users1.keys());
+// for(let x of user1.keys()){
+//     console.log(x);
+// }
+
 

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>javascript/math.html</title>
+    <script>
+        let num = -3.2;
+        let result = Math.round(num);
+        result = Math.trunc(num); //버림   -3.2 => -3
+        result = Math.ceil(num); //올림
+        result = Math.floor(num); //버림   -3.2 => -4
+        result = Math.sign(num); //양의값이면 1, 음수면 -1 리턴
+        result = Math.pow(3, 2); //제곱
+        result = Math.sqrt(64); //루트 씌운값
+        result = Math.abs(-94); //절대값
+        result = Math.random(); //0 ~ 1 사이의 랜덤값
+        let randAry = [];
+        for(let i=0;i<10;i++){
+            result = Math.floor(Math.random() * 8); //0~5 정수
+            console.log(result);
+            randAry.push(result);
+        }
+        console.log(randAry);
+        let notDupAry = [];
+        
+        randAry.forEach(function(val, ind){
+            if(notDupAry.indexOf(val) == -1)
+                notDupAry.push(val);
+        });       
+
+        console.log(notDupAry.sort(function(t,l){
+            return t-l;
+        }));
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
