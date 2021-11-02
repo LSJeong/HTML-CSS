@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>javascript/class.html</title>
+    <!-- <script src="class1.js"></script> -->
+</head>
+
+<body>
+    <div id="add">
+        학번:<input type="text" id="studentNo"><br>
+        이름:<input type="text" id="studentName"><br>
+        점수:<input type="number" id="score"><br>
+        학년:<input type="number" id="year"><br>
+        <button id='btn'>추가</button>
+    </div>
+
+    <div id="show"></div>
+    <script>
+        class Student {
+            constructor(studentNo, studentName, score, year) {
+                this.studentNo = studentNo;
+                this.studentName = studentName;
+                this.score = score;
+                this.year = year;
+            }            
+        }
+
+        class Table {
+            constructor() {
+
+                this.table = document.createElement('table');
+                document.getElementById('show').appendChild(this.table);
+                this.thead = document.createElement('thead');
+                this.tbody = document.createElement('tbody');
+                this.table.appendChild(this.tbody);
+                this.table.appendChild(this.thead);
+                this.table.setAttribute('border','1');
+
+                this.th = document.createElement('th');
+                this.th.innerHTML = '학번';
+                this.thead.appendChild(this.th);
+
+                this.th = document.createElement('th');
+                this.th.innerHTML = '이름';
+                this.thead.appendChild(this.th);
+
+                this.th = document.createElement('th');
+                this.th.innerHTML = '점수';
+                this.thead.appendChild(this.th);
+
+                this.th = document.createElement('th');
+                this.th.innerHTML = '학년';
+                this.thead.appendChild(this.th);
+            }
+
+            addRow(obj){
+                this.tr = document.createElement('tr');
+                this.tbody.appendChild(this.tr);
+                for(let stu in obj){
+                    this.td = document.createElement('td');
+                    this.td.innerHTML = obj[stu];
+                    this.tr.appendChild(this.td);
+                }
+
+            }
+        }
+
+        let table = new Table();
+     
+
+
+        document.getElementById('btn').onclick = function () {
+
+            let stNo = document.getElementById('studentNo').value;
+            let stName = document.getElementById('studentName').value;
+            let stScore = document.getElementById('score').value;
+            let stYear = document.getElementById('year').value;
+            let stu = new Student(stNo, stName, stScore, stYear);
+
+
+            table.addRow(stu);
+        }
+    </script>
+
+</body>
+
+</html>

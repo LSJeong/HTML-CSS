@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>javascript/json.html</title>
+    <style>
+        ul{
+            list-style-type: none;
+        }
+        ul>li{
+            display: inline-block;
+            width: 80px;
+            height: 30px;
+            color: aqua;
+            background-color: navy;
+            text-align: center;
+            margin: 2px;
+            cursor: pointer;
+        }
+        #content{
+            /* border: 1px solid red; */
+            margin-left: 45px;
+            
+        }
+        .title{
+            display: inline-block;
+            width: 20vw;
+            background-color: royalblue;
+            color: yellow;
+            font-size: 20px;
+            margin: 2px;
+        }
+        .content{
+            display: inline-block;
+            width: 60vw;
+            background-color: royalblue;
+            color: yellow;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div id="title"></div>
+    <div id="content"></div>
+    <script>
+        let divs = document.getElementsByTagName('div'); //HTMLCollection
+        // divs[0]
+        let nodes = document.querySelectorAll('.title'); //NodeList
+        // nodes[0]
+        let cont = document.getElementById('title');
+        // cont[0] : 하나만 가져오기때문에 틀림
+        
+        let obj = {
+            name : "hong",
+            age: 25,
+            hobby: ['sleeping','reading'],
+            getAge: function(){
+                return this.age;
+            }
+        }
+
+        // JSON => JavaScropt Object Notation.
+        let jsonObj = `[{
+            "name" : "hong",
+            "age" : 15,
+            "marriage" : true,
+            "car" : null,
+            "hobby" : ["walking","hiding"],
+            "family": {
+                "father":"hong_father",
+                "mother":"hong_mother"
+            }
+        }]`
+
+        console.log(JSON.parse(jsonObj)); //json type => object type
+        console.log(JSON.stringify(obj)); //object type => json type
+
+        // Ajax : 서버측에 페이지를 요청하고 결과를 받아오는 object
+        let xhtp = new XMLHttpRequest();
+        let globalData = null;
+        xhtp.onreadystatechange = function (){
+            console.log(xhtp.readyState, xhtp.status);
+            if(xhtp.readyState == 4 && xhtp.status == 200){ // 4: 모든처리가 끝난상태, 200: 서버 처리 정상 완료
+                console.log(xhtp.responseText);
+                let data = JSON.parse(xhtp.responseText);
+                globalData = data;
+                // console.log(data);
+                createUserList(data);
+            }
+        }
+        xhtp.open('get','MOCK_DATA.json');
+        xhtp.send();
+
+
+        // function createUserList(ary){
+        //     let ul = document.createElement('ul');
+        //     for (let row of ary){
+        //         let li = document.createElement('li');
+        //         li.innerHTML = `id: ${row.id}, fname: ${row.first_name}, lname: ${row.last_name}`;
+        //         ul.appendChild(li);
+        //     }
+        //     document.body.appendChild(ul);
+        // }
+
+        function createUserList(ary){
+            let ul = document.createElement('ul');
+            for (let row of ary){
+                let li = document.createElement('li');
+                li.onclick = function(){
+                    showInfo(row.id);
+                }
+                li.innerHTML = row.first_name;
+                ul.appendChild(li);
+            }
+            document.getElementById('title').appendChild(ul);
+        }
+
+        function showInfo(id){
+            let thisData = globalData.filter(function(val,ind){
+                return val.id === id;
+            });
+            console.log(thisData); //조회된 아이디 기준 데이터 한건
+            //<div id='content'></div>
+            //<div class='title'>ID</div><div class='content id'>1</div>
+            //<div class='fname'>Fname</div><div class='content fname'>Edna</div>
+            let obj = thisData[0];          
+            let contentList = document.getElementById('content');
+            for(let i=0,cnt = contentList.children.length; i<cnt;i++){
+                contentList.children[0].remove();
+            }
+            for(let field in obj){
+                let titleDiv = document.createElement('div');
+                titleDiv.className = 'title';
+                titleDiv.innerHTML = field;
+
+                let contentDiv = document.createElement('div');
+                contentDiv.className = `content ${field}`;
+                contentDiv.innerHTML = obj[field];
+
+                contentList.append(titleDiv, contentDiv);
+            }
+        }
+    </script>
+</body>
+</html>

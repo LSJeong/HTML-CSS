@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>javascript/boolean.html</title>
+</head>
+<body>
+    <script>
+        let val = 0; //nul,, '', -0, undefined
+        val = 3 > 1; //true
+        val = '';  //false
+        val = 3;
+        if(val > 4 ? 'true' : false){ //''안에 들어있으면 문자열이므로 false여도 참값 나옴
+            console.log('참값');
+        }else{
+            console.log('거짓.');
+        }
+        
+        val = -0; //false
+        if(Math.sign(val)){  //sign: 양수면 1, 음수면 -1
+            console.log('참값');
+        }else{
+            console.log('거짓.');
+        }
+
+        const letters = new Set(["a","b","c"]);
+        letters.add('d');
+        letters.add('e');
+        letters.delete('d');
+        letters.add('e'); //set은 중복값 제외되므로 추가안됨
+        letters.add('e');
+
+        letters.forEach(function(a,b,c){ //value, 자기자신, set
+            console.log(a,b,c);
+        });
+        
+        let result = letters.values();
+        console.log(typeof result);
+        console.log(letters.size);  //length가 아니라 size
+
+        for(let val of letters.values()){
+            console.log(val);
+        }
+
+        // for(let i=0; i< 4;i++){
+        //     console.log(result[i]);
+        // } //이렇게 인덱스로는 쓸수없다
+       
+        const fruits = new Map(); //key : value => entry
+        fruits.set('apple', 500);
+        fruits.set('banana',400);
+        let price = fruits.get('apple');
+        console.log(price);
+        
+        console.log(fruits.entries());
+
+        let fruitAry = [];
+        for(let ent of fruits.entries()){
+            console.log(ent); //entry 타입 => ['key','value']
+            fruitAry.push(ent);
+        }
+        console.log(fruitAry); // [['apple',500], ['banana',400]]
+
+        fruits.forEach(function(val,key, map){  //value, key, Map
+            console.log(val,key, map);
+        });
+
+        let ary = []; //new Array();
+        let obj = {}; //new Object();
+        let reg = /w3schools/i; //new RegExp();  i:대소문자 구분x
+        console.log(typeof reg);
+
+        let text = "Visit W3Schools!";
+        let n = text.search(reg); //인덱스값 가져옴
+        console.log(n);
+
+        text = "Visit Microsoft!";
+        result = text.replace(/microsoft/i,"W3Schools");
+        console.log(result);
+
+    </script>
+</body>
+</html>
