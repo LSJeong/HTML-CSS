@@ -57,7 +57,7 @@
     <script>
         let forBy = 4;
         let pow = Math.pow(forBy, 2);
-        let half_pow = pow / 2 ;
+        let half_pow = pow / 2;
         // 배열을 임의 생성
         let randomAry = [];
         while (randomAry.length != pow) {
@@ -73,6 +73,7 @@
         tbody = document.createElement('tbody');
         table.appendChild(tbody);
         document.getElementById('show').appendChild(table);
+        let cnt = 0;
 
         randomAry.forEach(function (val, ind) {
             if (ind % forBy == 0) {
@@ -86,7 +87,7 @@
                 setTimeout(function () {
                     let selVal = document.querySelectorAll('.selected');
                     if (selVal.length != 2) {
-                        for(let i =0;i<selVal.length;i++){
+                        for (let i = 0; i < selVal.length; i++) {
                             selVal[0].className = 'not_correct';
                         }
                         return;
@@ -94,16 +95,19 @@
                     if (selVal[0].value == selVal[1].value) {
                         selVal[0].className = 'correct';
                         selVal[1].className = 'correct';
-                        let cnt = document.querySelectorAll('.correct');
-                        if(cnt == pow){
-                            alert('성공');
-                        }
+
                     } else {
                         selVal[0].className = 'not_correct';
                         selVal[1].className = 'not_correct';
                     }
+                    cnt = cnt + 1;
+                    console.log(cnt);
 
-                    
+                    let win = document.querySelectorAll('.correct').length;
+
+                    if (win == pow) {
+                        alert(cnt + '번만에 성공하셨습니다!');
+                    }
                 }, 2000);
 
             }

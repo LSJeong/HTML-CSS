@@ -1,12 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>javascript/json1.html</title>
+    <style>
+        #name, #salary{
+            margin: 8px;
+        }
+        ul>li:nth-child(2n+1){
+            display: inline-block;
+            color: royalblue;  
+        }
+        select{
+            width: 70px;
+            margin: 8px;
+        }
+        ul>li:nth-child(2n){
+            display: inline-block;
+            /* color: aqua;
+            background-color: navy; */
+            margin: 5px;
+        }
+        ul>li:nth-child(2){
+            width: 50px;
+        }
+        ul>li:nth-child(10){
+            width: 70px;
+        }
+        ul>li:nth-child(4), ul>li:nth-child(6){
+            width: 130px;
+        }
+        ul>li:nth-child(8){
+            width: 300px;
+            
+        }
+        
+        /* .title{
+            display: inline-block;
+            width: 20vw;
+            background-color: royalblue;
+            color: yellow;
+            font-size: 20px;
+            margin: 2px;
+        }
+        .content{
+            display: inline-block;
+            width: 60vw;
+            background-color: royalblue;
+            color: yellow;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 2px;
+        } */
+    </style>
 </head>
+
 <body>
-    
+    <div id="title"></div>
+    <div id="content"></div>
+    <!-- <select name="" id="">
+        <option value="M">남자</option>
+        <option value="F">여자</option>
+    </select> -->
+    <script>
+        let sel = document.createElement('select');
+        let option = document.createElement('option');
+        option.innerHTML = "남자";
+        option.value = "Male";
+        sel.appendChild(option);
+        option = document.createElement('option');
+        option.innerHTML = "여자";
+        option.value = "Female";
+        sel.appendChild(option);
+        let title = document.getElementById('title');
+        title.appendChild(sel);
+
+        let label = document.createElement('label');
+        label.innerHTML = 'first_name 조회: ';
+        title.appendChild(label);
+
+        let input = document.createElement('input');
+        input.id = 'name';
+        title.appendChild(input);
+
+        label = document.createElement('label');
+        label.innerHTML = '급여: ';
+        title.appendChild(label);
+
+        input = document.createElement('input');
+        input.id = 'salary';
+        input.type = 'number';
+        title.appendChild(input);
+
+        let btn = document.createElement('button');
+        btn.innerHTML = '조회';
+        title.appendChild(btn);
+
+
+        let xhtp = new XMLHttpRequest();
+        let globalData = null;
+        xhtp.onreadystatechange = function () {
+            console.log(xhtp.readyState, xhtp.status);
+            if (xhtp.readyState == 4 && xhtp.status == 200) {
+                console.log(xhtp.responseText);
+                let data = JSON.parse(xhtp.responseText);
+                globalData = data;
+                // createUserList(data);
+            }
+        }
+        xhtp.open('get', 'DATA.json');
+        xhtp.send();
+
+        btn.onclick = function () {
+            const searchoption = document.querySelector('select>option:checked').value;
+            const name = document.getElementById('name').value;
+            const salary = document.getElementById('salary').value;
+            createUserList(searchoption, name, salary);
+
+        }
+
+        function createUserList(searchoption, name, salary) {
+            let thisData = globalData.filter(function (val, ind) {
+                return (val.first_name).indexOf(name) != -1 && val.salary >= salary && val.gender == searchoption;
+            });
+            console.log(thisData);
+
+            let contentList = document.getElementById('content');
+            for (let i = 0, cnt = contentList.children.length; i < cnt; i++) {
+                contentList.children[0].remove();
+            }
+
+            for (let i = 0; i < thisData.length; i++) {
+                let ul = document.createElement('ul');
+                for (let field in thisData[i]) {
+                    let titleDiv = document.createElement('li');
+                    titleDiv.className = 'title';
+                    titleDiv.innerHTML = field+ ' : ';
+                    ul.appendChild(titleDiv);
+                    let contentDiv = document.createElement('li');
+                    contentDiv.className = `content ${field}`;
+                    contentDiv.innerHTML = thisData[i][field];
+                    ul.appendChild(contentDiv);
+                    
+                }
+                contentList.appendChild(ul);
+            }
+        }
+    </script>
 </body>
+
 </html>

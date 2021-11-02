@@ -40,21 +40,12 @@
                 this.table.appendChild(this.thead);
                 this.table.setAttribute('border','1');
 
-                this.th = document.createElement('th');
-                this.th.innerHTML = '학번';
-                this.thead.appendChild(this.th);
-
-                this.th = document.createElement('th');
-                this.th.innerHTML = '이름';
-                this.thead.appendChild(this.th);
-
-                this.th = document.createElement('th');
-                this.th.innerHTML = '점수';
-                this.thead.appendChild(this.th);
-
-                this.th = document.createElement('th');
-                this.th.innerHTML = '학년';
-                this.thead.appendChild(this.th);
+                let titles = ['학번','이름','점수','학년'];
+                for(let title of titles){
+                    this.th = document.createElement('th');
+                    this.th.innerHTML = title;
+                    this.thead.appendChild(this.th);
+                }
             }
 
             addRow(obj){
