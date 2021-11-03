@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>javascript/memberJson.html</title>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		#show {
+			display: inline-block;
+			width: 56vw;
+			padding-right: 2vw;
+		}
+
+		#content {
+			display: inline-block;
+			width: 40vw;
+			border: 1px solid red;
+		}
+		.row{
+			border: 1px solid blue;
+		}
+		
+		.row>.title{
+			display: inline-block;
+			width: 10vw;
+			background-color: aqua;
+		}
+		
+		.row>.content{
+			display: inline-block;
+			width: 25vw;
+			background-color: yellow;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="show"></div>
+	<div id="content">
+		<div class="row">
+			<div class="title">id</div>
+			<div class="content">user1</div>
+		</div>
+		<div class="row">
+			<div class="title">name</div>
+			<div class="content">홍길동</div>
+		</div>
+		<div class="row">
+			<div class="title">생일</div>
+			<div class="content">1995-03-05</div>
+		</div>
+	</div>
+	<script>
+		// Ajax => XMLHttpRequest()
+		let xhtp = new XMLHttpRequest();
+		xhtp.onreadystatechange = function () {
+			if (xhtp.readyState == 4 && xhtp.status == 200) {
+				let data = JSON.parse(xhtp.responseText);
+				console.log(data);
+				/* console.log(xhtp.responseText); */
+				createList(data);
+
+			}
+		}
+		xhtp.open('get', '../GetMemberJsonServ'); //오픈하는 방식과 오픈 페이지 
+		xhtp.send();
+
+		/* xhtp.open('post', '../GetMemberJsonServ');
+		xhtp.setRequestHeader("Content-type","application/x-www-form-urlencoded"); //post방식일 경우 써줘야한다.
+		xhtp.send("id=user4&name=Hong&addr=daegu171"); */
+		const titles = [ 'userId', 'userName', 'birthDate', 'phone',
+			'address', 'gender'];
+		function createList(ary) {
+			let table, thead, tbody, tr, th, td, btn;
+			let label = document.createElement('h1');
+			label.innerHTML = "회원리스트";
+			document.getElementById('show').appendChild(label);
+			table = document.createElement('table');
+			table.setAttribute('border', '1');
+			thead = document.createElement('thead');
+			document.getElementById('show').appendChild(table);
+			table.appendChild(thead);
+			tr = document.createElement('tr');
+			thead.appendChild(tr);
+			/* const titles = [ 'userId', 'userName', 'birthDate', 'phone',
+					'address', 'gender']; */
+			for (let title of titles) {
+				th = document.createElement('th');
+				th.textContent = title;
+				tr.appendChild(th);
+			}
+			
+			th = document.createElement('th');
+			th.textContent = "삭제";
+			tr.appendChild(th);
+					
+			tbody = document.createElement('tbody');
+			table.appendChild(tbody);
+
+			for(let row of ary){
+				tr = document.createElement('tr');
+				for(let field of titles){
+					td = document.createElement('td');
+					if(row[field] != undefined){
+						td.innerHTML = row[field];
+					}else{
+						td.innerHTML = '';
+					}
+					tr.appendChild(td);
+				}
+				td = document.createElement('td');
+				btn = document.createElement('button');
+				btn.innerHTML="삭제";
+				td.appendChild(btn);
+				tr.appendChild(td);
+				
+				tbody.appendChild(tr);
+			}
+		}
+
+		function getUserInfo(id) {
+			let xhtp = new XMLHttpRequest();
+			xhtp.onreadystatechange = function () {
+				if (xhtp.readyState == 4 && xhtp.status == 200) {
+					console.log(xhtp.responseText);
+					let data = JSON.parse(xhtp.responseText);
+					showDetail(data);
+				}
+			}
+			xhtp.open('get', '../GetMemberOneJsonServ?id=' + id); //한건만 호출
+			xhtp.send();
+		}
+		
+		function showDetail(row){
+			//원래 요소가 있으면 요소를 지워주세요.
+			let contentElm = document.querySelector('#content');
+			let cnt = contentElm.children.length;
+			for(let i=0;i<cnt;i++){
+				contentElm.children[0].remove();
+			}			
+			//상세화면을 생성해주는 부분.
+			for(let title of titles){
+				let rowDiv = document.createElement('div');
+				rowDiv.className = 'row';
+				
+				let titleDiv = document.createElement('div');
+				let contentDiv = document.createElement('div');
+				rowDiv.append(titleDiv, contentDiv);
+				
+				titleDiv.className = 'title';
+				titleDiv.textContent = title;
+				
+				contentDiv.className = 'content';
+				contentDiv.textContent = row[title];
+				
+				document.getElementById('content').appendChild(rowDiv);
+				
+			}
+		}
+		
+		getUserInfo('user1');
+		
+		
+	</script>
+</body>
+
+</html>
