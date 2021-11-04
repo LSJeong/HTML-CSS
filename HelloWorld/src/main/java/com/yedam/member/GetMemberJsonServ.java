@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 /**
  * Servlet implementation class GetMemberJsonServ
@@ -63,19 +64,53 @@ public class GetMemberJsonServ extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/json;charset=UTF-8");
+		
 		MemDAO dao = new MemDAO();
-		String userId=request.getParameter("id");
-		String userName=request.getParameter("name");
-		String address = request.getParameter("addr");
+		String userId=request.getParameter("u_i");
+		String userName=request.getParameter("u_n");
+		String address = request.getParameter("u_a");
+		String phone = request.getParameter("u_p");
+		String gender = request.getParameter("u_g");
+		String birth = request.getParameter("u_b");
+		
 		MemberVO vo = new MemberVO();
 		vo.setUserId(userId);
 		vo.setUserName(userName);
 		vo.setAddress(address);
+		vo.setPhone(phone);
+		vo.setGender(gender);
+		vo.setBirthDate(birth);
 		
-		dao.insertMember(vo);
+		Gson gson = new GsonBuilder().create();
+		JsonObject jsonObj = new JsonObject();
 		
-		response.getWriter().println("OK");
+		
+		// {"retCode":"OK", "retVal": {vo}}
+		// {"retCode":"NG", "retVal": "담당자에게 문의!!"}
+		if(dao.insertMember(vo)) {
+			//response.getWriter().println("OK");
+			
+			jsonObj.addProperty("retCode", "OK");
+			jsonObj.addProperty("userId", vo.getUserId());
+			jsonObj.addProperty("userName",vo.getUserName());
+			jsonObj.addProperty("birthDate", vo.getBirthDate());
+			jsonObj.addProperty("address", vo.getAddress());
+			jsonObj.addProperty("phone", vo.getPhone());
+			jsonObj.addProperty("gender", vo.getGender());
+			
+			
+		}else {
+			jsonObj.addProperty("retCode", "NG");
+			jsonObj.addProperty("retMsg", "오류발생!!! \n 담당자에게 문의");
+			
+			
+		}
+		response.getWriter().println(gson.toJson(jsonObj));
+		//System.out.println(vo);
 	}
 
 }
