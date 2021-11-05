@@ -7,7 +7,107 @@ import java.util.List;
 import java.util.Map;
 
 public class MemDAO extends DAO {
-
+	//페이지별 토탈 건수 가져오기
+	public int getTotalCount() {
+		connect();
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select count(1) from member");
+			if(rs.next()) {
+				int r = rs.getInt(1);
+				System.out.println("조회건수: " + r);
+				return r;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}finally {
+			disconnect();
+		}
+		return 0;
+	}
+	
+	
+	
+	//페이지별 데이터 조회
+	public List<MemberVO> getMemberByPage(String page){
+		connect();
+		List<MemberVO> list = new ArrayList<MemberVO>();
+		String sql = "select b.* from\r\n"
+				+ "(select rownum as num, a.* from\r\n"
+				+ "(select * from member order by 1) a) b\r\n"
+				+ "where b.num >= ? and b.num <= ?";
+		int start = (Integer.parseInt(page) - 1) * 10 + 1;
+		int end = Integer.parseInt(page) * 10 ;
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, start);
+			psmt.setInt(2, end);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				MemberVO mem = new MemberVO();
+				mem.setAddress(rs.getString("address")); // DB 칼럼이름이랑 똑같이
+				mem.setBirthDate(rs.getString("birth_date"));
+				mem.setGender(rs.getString("gender"));
+				mem.setPhone(rs.getString("phone"));
+				mem.setUserId(rs.getString("user_id"));
+				mem.setUserName(rs.getString("user_name"));
+				list.add(mem);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		return list;
+		
+	}
+	
+	
+	//조회
+	public List<MemberVO> searchMemberList(MemberVO vo){
+		connect();
+		List<MemberVO> list = new ArrayList<>();
+		String sql = "select * from member m\r\n"
+				+ "where user_id = nvl(?,user_id)\r\n"
+				+ "and nvl(user_name,'1') like '%'||?||'%'\r\n"
+				+ "and nvl(address,'1') like '%'||?||'%'\r\n"
+				+ "and nvl(phone,'1') like '%'||?||'%'";
+		if(vo.getGender() != null && !vo.getGender().equals("all") && vo.getGender() != "") {
+			sql += "and gender = ?";
+		}
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getUserId());
+			psmt.setString(2, vo.getUserName());
+			psmt.setString(3, vo.getAddress());
+			psmt.setString(4, vo.getPhone());
+			if(vo.getGender() != null && !vo.getGender().equals("all") && vo.getGender() != "") {
+				psmt.setString(5, vo.getGender());				
+			}
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				MemberVO mem = new MemberVO();
+				mem.setAddress(rs.getString("address")); // DB 칼럼이름이랑 똑같이
+				mem.setBirthDate(rs.getString("birth_date"));
+				mem.setGender(rs.getString("gender"));
+				mem.setPhone(rs.getString("phone"));
+				mem.setUserId(rs.getString("user_id"));
+				mem.setUserName(rs.getString("user_name"));
+				list.add(mem);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		return list;
+	}
+	
+	
+	
 	// 수정
 	public Map<String, Object> updateMember(MemberVO vo) {
 		// retCode:OK, retVal: vo
@@ -131,7 +231,11 @@ public class MemDAO extends DAO {
 				vo.setPhone(rs.getString("phone"));
 				vo.setUserId(rs.getString("user_id"));
 				vo.setUserName(rs.getString("user_name"));
+				if(memberList.size() == 10) {
+					break;
+				}
 				memberList.add(vo);
+					
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
