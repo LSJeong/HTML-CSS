@@ -7,6 +7,106 @@ import java.util.List;
 import java.util.Map;
 
 public class MemDAO extends DAO {
+	//스케줄 삭제 메소드(title)
+	public boolean remSchedule(String title) {
+		connect();
+		String sql = "delete from schedule where title = ?";	
+		try {
+			psmt= conn.prepareStatement(sql);
+			psmt.setString(1, title);
+			int r = psmt.executeUpdate();
+			if(r>0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	
+	
+	//스케줄 등록 메소드(title,start,end);
+	public boolean addSchedule(String title, String start, String end) {
+		connect();
+		String sql = "insert into schedule values(?,?,?)";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, title);
+			psmt.setString(2, start);
+			psmt.setString(3, end);
+			int r = psmt.executeUpdate();
+			if(r > 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		return false;
+	}	
+	
+	
+	
+	
+	//fullCalendar용 샘플 데이터
+	//List<Map<String, String>>
+	public List<Map<String,String>> getSchedules(){
+		List<Map<String,String>> schedules = new ArrayList<Map<String,String>>();
+		connect();
+		String sql = "select * from schedule";
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("title", rs.getString("title"));
+				map.put("start", rs.getString("start_date"));
+				map.put("end", rs.getString("end_date"));
+				schedules.add(map);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		return schedules;
+	}
+	
+	
+	// 부서별 인원
+	public Map<String, Integer> getMemberByDept(){
+		connect();
+		String sql = "select 'Administration', 1 from dual\r\n"
+				+ "union all\r\n"
+				+ "select 'Accounting', 2 from dual\r\n"
+				+ "union all\r\n"
+				+ "select 'IT', 3 from dual\r\n"
+				+ "union all\r\n"
+				+ "select 'Executive', 3 from dual\r\n"
+				+ "union all\r\n"
+				+ "select 'Shipping', 5 from dual\r\n"
+				+ "union all\r\n"
+				+ "select 'Sales', 3 from dual\r\n"
+				+ "union all\r\n"
+				+ "select 'Marketing', 2 from dual";
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		try {
+			stmt = conn.createStatement();
+			rs= stmt.executeQuery(sql);
+			while(rs.next()) {
+				map.put(rs.getString(1), rs.getInt(2));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		return map;
+		
+	}
+	
 	//페이지별 토탈 건수 가져오기
 	public int getTotalCount() {
 		connect();

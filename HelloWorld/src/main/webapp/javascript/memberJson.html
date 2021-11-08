@@ -193,71 +193,7 @@ tbody button, tr>td>input {
 			console.log(result.totalCnt); // 건수가 출력됨
 			let pageCnt = result.totalCnt / 10;
 			pageCnt = Math.ceil(pageCnt); //올림 값
-			
-			
-			/* for(let i=-1; i<=pageCnt+2;i++){
-				let targetPage = i;
-				let a = document.createElement('a');
-				a.href = `javascript:void(0)`;
-				if(i == -1){
-					a.textContent = "<<";
-					targetPage = 1;
-				}else if(i == 0){
-					a.textContent = "<";
-				}else if(i == pageCnt + 1 ){
-					a.textContent = ">";
-				}else if(i == pageCnt +2){
-					a.textContent = ">>";
-					targetPage=pageCnt;
-				}else{
-					a.textContent = i;
-				}
-				if(i == 1){
-					a.className = 'active';
-					let prev = localStorage.setItem('prev', 1);
-				}
-				a.onclick = function(){
-					currentPage = a.textContent;
-					
-					if(a.textContent == '<<'){
-						currentPage = 1;
-					}else if(a.textContent == '>>'){
-						currentPage = pageCnt;
-					}else if(a.textContent == '<'){
-						if(localStorage.getItem('prev') == 1) currentPage = 1;
-						else{
-							currentPage = localStorage.getItem('prev') - 1;
-							localStorage.setItem('prev', localStorage.getItem('prev')-1);
-						}
-					}else if(a.textContent == '>'){
-						if(localStorage.getItem('prev') == pageCnt) currentPage = pageCnt;
-						else{
-							currentPage = parseInt(localStorage.getItem('prev')) + 1;
-							localStorage.setItem('prev', parseInt(localStorage.getItem('prev'))+1);
-						}
-					}else{
-						console.log(currentPage);
-						localStorage.setItem('prev', currentPage);
-					}					
-					let act = document.querySelectorAll('.pagination .active');
-					for(let j=0;j<act.length;j++){
-						act[j].className = null;
-					}
-					
-					// 현재 페이지에서 << 누르면 1페이지에 불
-					// < 누르면 이전 페이지에 불
-					// 완벽x
-					if(this.textContent == '<<') 
-						this.parentNode.children[2].className = 'active';
-					else if(this.textContent == '<')
-						this.parentNode.children[parseInt(localStorage.getItem('prev'))+1].className = 'active';
-					else if(this.textContent == '>>')
-						this.parentNode.children[pageCnt+1].className = 'active';
-					else if(this.textContent == '>')
-						this.parentNode.children[parseInt(localStorage.getItem('prev'))+2].className = 'active';
-					else
-						this.className = 'active'; */
-					
+								
 			// 페이지 화면에 그리기.
 			for (let i = -1; i <= pageCnt + 2; i++) {
 				let targetPage = i;
@@ -652,8 +588,8 @@ tbody button, tr>td>input {
 			}
 			let data = JSON.parse(this.responseText);
 			createList(data);
-			
 		}
+		
 	</script>
 </body>
 
