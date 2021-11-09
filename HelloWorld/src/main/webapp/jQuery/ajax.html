@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery/ajax.html</title>
+    <script src='jquery-3.6.0.min.js'></script>
+    <script>
+        $(document).ready(function () {
+            // ajax : XMLHttpRequest();
+            $.ajax({
+                url: '../javascript/MOCK_DATA.json', //요청 페이지(text,html,xml,json)
+                type: 'get', //요청 방식(get,post), 따로 안적으면 디폴트 get방식
+                data: { //parameter => request.getParameter();
+                    id: 3,
+                    name: 'hong'
+                }, //'id=3&name=hone',  이렇게 object타입으로도 가능
+                dataType: 'json', // 가져오는 dataType, JSON.parse(this.responseText) 똑같음.파싱해서 줌!!
+                success: successCallBack,
+                error: errorCallBack
+            });
+
+            function successCallBack(result, status, xhr) {
+                // 페이지를 지정
+                console.log(result, status, xhr);
+
+                let $table = $('<table>').attr('border', '1');
+                let $thead = $('<thead>');
+                let $tr = $('<tr>');
+                for (field in result[0]) {
+                    let $th = $('<th>').text(field);
+                    $tr.append($th);
+                }
+                $thead.append($tr);
+                $thead.css("color", "blue");
+
+                let $tbody = $('<tbody>');
+                $table.append($tbody, $thead);
+
+
+                $(result).each(function (ind, val) {
+                    let $tr = createTbody(val);
+                    $tbody.append($tr);
+                });
+
+                $('#show').append($table);
+            }
+
+            function errorCallBack(reject) {
+                // console.error(`errorCode: ${reject.status}, errorMsg: ${reject.statusText}`);
+                window.alert(`errorCode: ${reject.status}, errorMsg: ${reject.statusText}`);
+            }
+
+            function createTbody(val) {
+                let $tr = $('<tr>');
+                for (field in val) {
+                    let $td = $('<td>').text(val[field]);
+                    $tr.append($td);
+                }
+                $tr.mouseover(function () {
+                    $(this).css({
+                        "background-color": "yellow",
+                        "color": "red"
+                    });
+                });
+                $tr.mouseout(function () {
+                    $(this).css({
+                        "background-color": '',
+                        "color" : ''
+                    });
+                });
+                return $tr;
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div id="show"></div>
+</body>
+
+</html>

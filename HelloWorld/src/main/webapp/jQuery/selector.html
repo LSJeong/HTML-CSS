@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery/selector.html</title>
+    <script src='jquery-3.6.0.min.js'></script>
+    <script>
+        class Student {
+            constructor(studNo, studName, math, eng, hobby) {
+                this.studNo = studNo;
+                this.studName = studName;
+                this.math = math;
+                this.eng = eng;
+                this.hobby = hobby;
+            }
+            getAverage() {
+                return Math.round((this.math + this.eng) / 2);
+            }
+        }
+
+        const students = [];
+        let s1 = new Student('21-01', '홍길동', 90, 80, '독서');
+        let s2 = new Student('21-02', '이소정', 84, 95, '바둑');
+        let s3 = new Student('21-03', '박기자', 70, 82, '오목');
+        let s4 = new Student('21-04', '최철수', 99, 75, '장기');
+        let s5 = new Student('21-05', '신짱구', 78, 88, '체스');
+        students.push(s1);
+        students.push(s2);
+        students.push(s3);
+        students.push(s4);
+        students.push(s5);
+
+        $(document).ready(function () {
+            // let $div = $('<div />').html('<h3>Hello</h3>').attr('id','id1');  //변수이름앞에 $ 올수있음, .html() = innerHTML과 같음
+            // let $p = $('<p />').text('<h3>Hello</h3>').attr('class','id1'); //.text()는 문자열로 인식해서 그대로 나옴
+
+            // $('body').append($div, $p);
+
+            // console.log($('div#id1>h3').text());  //div, p태그가 여러개일경우 id,class 지정안해줄시 다 가져옴
+            // console.log($('p.id1').text());
+
+            let $table = $('<table>').attr('border', '1');
+            let $tbody = $('<tbody>');
+            let $thead = $('<thead>');
+            $table.append($tbody, $thead); //jquery변수기때문에 $($table)안해줘도 됨 => 하지만 안헷갈리려면 하는게 낫다..
+
+            let $tr = $('<tr>').append(
+                $('<th>').text('학번'),
+                $('<th>').text('이름'),
+                $('<th>').text('수학'),
+                $('<th>').text('영어'),
+                $('<th>').text('취미'),
+                $('<th>').text('평균'),
+                $('<th>').text('버튼')
+            );
+
+            $thead.append($tr);
+
+            $(students).each(function (ind, val) {
+                console.log(val);
+                
+                let $tr = $('<tr>').append(
+                    $('<td>').text(val.studNo),
+                    $('<td>').text(val.studName),
+                    $('<td>').text(val.math),
+                    $('<td>').text(val.eng),
+                    $('<td>').text(val.hobby),
+                    $('<td>').text(val.getAverage()),
+                    $('<td>').append($('<button>삭제</button>').click(delFnc))
+                );
+                //$tr.click(trFnc);
+                //$tr.mouseover(mouseOverFnc);
+                //$tr.mouseout(mouseOutFnc);
+                $tr.on({
+                    'click': trFnc,
+                    'mouseover': mouseOverFnc,
+                    'mouseout': mouseOutFnc
+                }); //이렇게도 가능함
+                $tbody.append($tr);
+            });
+            $('#show').append($table);
+
+            function mouseOutFnc() {
+                $(this).css({
+                    'background-color': '',
+                    'color': ''
+                });
+            }
+
+            function mouseOverFnc() {
+                $(this).css({
+                    'background-color': 'yellow',
+                    'color': 'red'
+                }); //btn.style.backgroundColor 와 같음
+            }
+
+            function trFnc() {
+                console.log($(this));
+                let sno = $(this).children().eq(0).text(); //첫번째 자식의 text
+                let sname = $(this).children().eq(1).text();
+                window.alert(`학번: ${sno}, 이름: ${sname}`);
+            }
+
+            //삭제기능
+            function delFnc() {
+                //tr, td에도 click이벤트 있을시 다 선택되는데, stopPropagation로 차단해서 버튼만 실행됨
+                //td에 넣을경우 td와 버튼까지만 실행됨, 상위로의 전파차단의 의미
+                event.stopPropagation();
+                
+                console.log($(this)); //버튼 태그
+                // prev:형님, 바로 위에 있는 요소를 뜻함(부모x, 같은자식간의)
+                // neㅌt:바로 밑에 있는 요소
+                // let avg = $(this).parent().prev().text();  
+                // let hob = $(this).parent().prev().prev().text();  
+                // window.alert(`평균: ${avg}, 취미: ${hob}`);  
+                
+                //parentsUntil : this(지금은 버튼)을 기준으로 tbody를 만나기전 최상위에 있는 부모
+                //부모가 많을 경우 parent() 계속 써주기 힘드니까..
+                $(this).parentsUntil('tbody').remove();
+
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <!-- <div>
+        <h3>Bad</h3>
+    </div>
+    <p>Bad</p> -->
+    <h3>학생명단</h3>
+    <div id="show"></div>
+
+</body>
+
+</html>
