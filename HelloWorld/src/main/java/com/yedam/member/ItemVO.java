@@ -4,7 +4,7 @@ public class ItemVO {
 	private int prodId;
 	private String prodName;
 	private String prodDesc;
-	private float likeIt;
+	private double likeIt;
 	private int originPrice;
 	private int salePrice;
 	private String prodImage;
@@ -26,11 +26,11 @@ public class ItemVO {
 	public void setProdDesc(String prodDesc) {
 		this.prodDesc = prodDesc;
 	}
-	public float getLikeIt() {
+	public double getLikeIt() {
 		return likeIt;
 	}
-	public void setLikeIt(float likeIt) {
-		this.likeIt = likeIt;
+	public void setLikeIt(double d) {
+		this.likeIt = d;
 	}
 	public int getOriginPrice() {
 		return originPrice;

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery/ajax 2.html</title>
+    <script src='jquery-3.6.0.min.js'></script>
+    <script>
+        $(document).ready(function () {
+            // ajax : XMLHttpRequest();
+            $.ajax({
+                url: '../javascript/MOCK_DATA.json', //요청 페이지(text,html,xml,json)
+                type: 'get', //요청 방식(get,post), 따로 안적으면 디폴트 get방식
+                data: { //parameter => request.getParameter();
+                    id: 3,
+                    name: 'hong'
+                }, //'id=3&name=hone',  이렇게 object타입으로도 가능
+                dataType: 'json', // 가져오는 dataType, JSON.parse(this.responseText) 똑같음.파싱해서 줌!!
+                success: successCallBack,
+                error: errorCallBack
+            });
+
+           
+
+            //success 콜백함수
+            function successCallBack(data, textStatus, jqxHR) {
+                // 페이지를 지정
+                console.log(data, textStatus, jqxHR);
+                let obj = data[0]; // {id:?, first_name:?, last_name:?...}
+                let fields = []; // ['id','first_name','last_name','email'...]
+                for (let field in obj) {
+                    fields.push(field);
+                }
+                console.log(fields);
+                // table, tbody
+                let table = $('<table>').attr({'id':'tbl','border':1});
+                let tbody = $('<tbody>');
+                $(table).append(tbody);
+
+
+                // tr 요소
+                $(data).each((ind, val) => { //arrow func
+                    let tr = $('<tr>');
+                    for (let field of fields) {
+                        // $(tr).append($('<td>').text(val[field]));
+                        $('<td>').text(val[field]).appendTo(tr); //appendTo: 하위요소를 상위요소에 넣기
+                    }
+                    $(tr).append($('<button>').text('삭제'));
+                    $(tbody).append(tr);
+                });
+                //show 하위
+                $('#show').append(table);
+
+                // $('#tbl>tbody>tr>button').on('click',clickFnc); //복사(clone)해서 새로 생긴 버튼은 이렇게하면 적용되지않으므로 밑에 코드로 해야함
+                $('#tbl>tbody').on('click','button',clickFnc);
+
+                // $('#tbl>tbody>tr:lt(2)').css('background-color','yellow');  //인덱스값으로 2보다 작은
+                // $('#tbl>tbody>tr:gt(2)').css('background-color','yellow'); //인덱스값으로 2보다 큰
+                // $('#tbl>tbody>tr').eq(2).css('background-color','yellow'); //인덱스값으로 두번째
+                // $('#tbl>tbody>tr').slice(2,5).css('background-color','yellow'); //인덱스갑승로 2번째부터 5번째까지
+                // $('#tbl>tbody>tr:nth-of-type(2n)').css('background-color','yellow'); //같은 타입 두번째, 네번째...인덱스값x
+                $('#tbl>tbody>tr>td:contains(Okroy)').css('background-color','yellow'); // 'Okroy'을 포함한 요소만.
+
+
+            }
+
+            //click 콜백함수
+            function clickFnc(){
+                event.stopPropagation();
+                console.log($(this));
+                let trClone = $(this).parent().clone(); //복사
+                $('#tbl>tbody>tr:nth-child(1)').before(trClone);  //before: 앞쪽에 붙여넣기, after: 뒤쪽에 붙여넣기
+                // $(this).parent().after(trClone);
+
+                // $(this).parent().remove(); //삭제
+            }
+
+            //error 콜백함수
+            function errorCallBack(reject) {
+                // console.error(`errorCode: ${reject.status}, errorMsg: ${reject.statusText}`);
+                window.alert(`errorCode: ${reject.status}, errorMsg: ${reject.statusText}`);
+            }
+
+
+        });
+    </script>
+</head>
+
+<body>
+    <div id="show"></div>
+</body>
+
+</html>

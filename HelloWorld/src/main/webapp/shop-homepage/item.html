@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>shop-homepage/item.html</title>
+<script src="../jQuery/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<div id="container">
+		상품아이디<div id="prodId"></div>
+		상품명<div id="prodName"></div>
+	</div>
+<h3>Item.page</h3>
+<script>
+	let loc = location.href; // 주소표시줄 값
+	let pos = loc.indexOf('='); // = 위치를 기준으로 값 찾아옴(ex. id=3일경우 =3을 가져옴)
+	let id = loc.substring(pos+1); // pos+1 하면 그 다음위치부터 가져오므로 =3에서 3만 가져옴
+	console.log(loc.substring(pos+1));
+	
+	$.ajax({
+		url: 'data.json',
+		data:'prodId=' + id,
+		dataType: 'json',
+		success: function(result){
+			$('#prodId').text(result.prodId);
+			$('#prodName').text(result.prodName);
+		},
+		error: function(reject){
+			console.log(reject);
+		}
+	});
+</script>
+</body>
+</html>
