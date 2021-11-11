@@ -10,6 +10,11 @@
     <style>
         #field {
             border: 1px solid black;
+           
+        }
+
+        #group{
+            text-align: center;
         }
 
         #field>div {
@@ -26,9 +31,11 @@
 </head>
 
 <body>
-    <input type="text" id="addValue">
-    <button id="addBtn">추가</button>
-    <button id="delBtn">삭제</button>
+    <div id="group">
+        <input type="text" id="addValue">
+        <button id="addBtn">추가</button>
+        <button id="delBtn">삭제</button>
+    </div>
     <p></p>
     <div id="field"></div>
 
@@ -55,7 +62,6 @@
             if (val == null || val == '') return;
             let aryval = val.replace(reg, '').replace(' ', '').split(' ');
             change(aryval);
-           
         }
 
         function delFunc() {
@@ -66,12 +72,15 @@
                 $('#addValue').val('');
                 return;
             }
-            let findWord = $('#field>div');
 
-            for(let origin of findWord){
-                if($(origin).text() == val)
-                    $(origin).css('visibility', 'hidden');
-            }
+            // let findWord = $('#field>div');
+            // for(let origin of findWord){
+            //     if($(origin).text() == val)
+            //         $(origin).css('visibility', 'hidden');
+            // }
+            
+            let findWord = $(`#field>div:contains(${val})`).css('visibility','hidden');
+       
             
             $('#addValue').val('');
         }
