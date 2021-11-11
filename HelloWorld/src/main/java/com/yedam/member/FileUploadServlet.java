@@ -38,7 +38,7 @@ public class FileUploadServlet extends HttpServlet {
 		int maxSize = 1024 * 1024 * 10;
 		ServletContext context = getServletContext();
 		String saveDir = context.getRealPath("images");
-
+		
 		MultipartRequest multi = new MultipartRequest(request, saveDir, maxSize, "UTF-8",
 				new DefaultFileRenamePolicy());
 

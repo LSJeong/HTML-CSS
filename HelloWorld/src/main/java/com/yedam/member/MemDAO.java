@@ -7,6 +7,61 @@ import java.util.List;
 import java.util.Map;
 
 public class MemDAO extends DAO {
+	
+	// datatable 리스트.
+	public List<DataTable> getDataTables(){
+		connect();
+		String sql = "select * from data_table";
+		List<DataTable> list = new ArrayList<DataTable>();
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				DataTable dt= new DataTable();
+				dt.setName(rs.getString("first_name"));
+				dt.setPosition(rs.getString("last_name"));
+				dt.setOffice(rs.getString("position"));
+				dt.setExtn(rs.getString("office"));
+				dt.setStartDate(rs.getString("start_date"));
+				dt.setSalary(rs.getString("salary"));
+				
+				list.add(dt);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		return list;
+	}
+	
+	
+	//datatable 업로드
+	public void insertDataTable(DataTable dt) {
+		connect();
+		String sql = "insert into data_table values(?,?,?,?,?,?)";
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, dt.getName());
+			psmt.setString(2, dt.getPosition());
+			psmt.setString(3, dt.getOffice());
+			psmt.setString(4, dt.getExtn());
+			psmt.setString(5, dt.getStartDate());
+			psmt.setString(6, dt.getSalary());
+			
+			int r = psmt.executeUpdate();
+			System.out.println(r + "insert.");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+	
+	}
+	
+	
 	//스케줄 삭제 메소드(title)
 	public boolean remSchedule(String title) {
 		connect();

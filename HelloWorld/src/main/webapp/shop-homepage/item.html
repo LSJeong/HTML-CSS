@@ -4,13 +4,59 @@
 <meta charset="UTF-8">
 <title>shop-homepage/item.html</title>
 <script src="../jQuery/jquery-3.6.0.min.js"></script>
+<script src="../ckeditor/ckeditor.js"></script>
+<style>
+	#container{
+		width: 80%;
+		margin: 0 auto;
+	}
+	#top{
+		float: left;
+		width: 30%;
+	}
+	.content{
+		float: left;
+		width: 60%;
+	}
+	#center{
+		clear: both;
+		border: 3px red dashed;
+	}
+	ul{
+		list-style-type: none;
+		
+	}
+	.image{
+		float: left;
+		width:40%;
+	}
+	#top{
+		border: 3px darkblue dashed;
+	}
+	
+</style>
 </head>
 <body>
 	<div id="container">
-		상품아이디<div id="prodId"></div>
-		상품명<div id="prodName"></div>
+		<div id="top">
+			<div class="image">
+
+			</div>
+			<div class="content">
+				<ul>
+					<li id="prod_id"></li>
+					<li id="prod_name"></li>
+					<li id="like_it"></li>
+					<li id="origin_price"></li>
+					<li id="sale_price"></li>
+				</ul>
+			</div>
+		</div>
+		<div id="center">
+
+		</div>
 	</div>
-<h3>Item.page</h3>
+<!-- <h3>Item.page</h3> -->
 <script>
 	let loc = location.href; // 주소표시줄 값
 	let pos = loc.indexOf('='); // = 위치를 기준으로 값 찾아옴(ex. id=3일경우 =3을 가져옴)
@@ -18,12 +64,26 @@
 	console.log(loc.substring(pos+1));
 	
 	$.ajax({
-		url: 'data.json',
-		data:'prodId=' + id,
+		url: '../GetItemOneServlet',
+		data:{
+			prod_id: id 
+		},
 		dataType: 'json',
 		success: function(result){
-			$('#prodId').text(result.prodId);
-			$('#prodName').text(result.prodName);
+			console.log(result);
+			let img = $('<img>').attr({
+				'src':'../images/'+result.prodImage,
+				'width' : '150px'
+			});
+			$('.image').append(img);
+
+			$('#prod_id').text('상품ID: '+result.prodId);
+			$('#prod_name').text('상품명: '+result.prodName);
+			$('#like_it').text('평점: ' + result.likeIt);
+			$('#origin_price').text('가격: '+result.originPrice);
+			$('#sale_price').text('할인가격: '+ result.salePrice);
+
+			$('#center').append(result.prodDesc);
 		},
 		error: function(reject){
 			console.log(reject);

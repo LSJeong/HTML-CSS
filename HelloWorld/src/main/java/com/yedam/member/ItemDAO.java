@@ -5,6 +5,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDAO extends DAO{
+	// 상품 아이디로 한건 조회
+	public ItemVO searchItem(String id) {
+		connect();
+		String sql = "select * from item where prod_id = ?";
+		ItemVO vo = null;
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, id);
+			
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				vo = new ItemVO();
+				vo.setLikeIt(rs.getDouble("like_it"));
+				vo.setOriginPrice(rs.getInt("origin_price"));
+				vo.setProdDesc(rs.getString("prod_desc"));
+				vo.setProdId(rs.getInt("prod_id"));
+				vo.setProdImage(rs.getString("prod_image"));
+				vo.setProdName(rs.getString("prod_item"));
+				vo.setSalePrice(rs.getInt("sale_price"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		return vo;
+	}
+	
 	// 상품 업로드
 	public ItemVO uploadProduct(ItemVO vo) {
 		connect();

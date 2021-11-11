@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jQuery/fileUpload.html</title>
     <script src="jquery-3.6.0.min.js"></script>
+    <script src="../ckeditor/ckeditor.js"></script>
     <style>
         th {
             width: 80px;
@@ -18,8 +19,7 @@
 
     <fieldset>
         <legend>파일업로드</legend>
-        <form id="frm" action="../FileUploadServlet" method="post" enctype="multipart/form-data"
-            onsubmit="formSubmit()">
+        <form id="frm" action="../FileUploadServlet" method="post" enctype="multipart/form-data">
             <table>
                 <tr>
                     <td>상품명</td>
@@ -27,7 +27,7 @@
                 </tr>
                 <tr>
                     <td>상품설명</td>
-                    <td><textarea name="prod_desc" cols="30" rows="5"></textarea></td>
+                    <td><textarea name="prod_desc" id="prod_desc" cols="30" rows="5"></textarea></td>
                 </tr>
                 <tr>
                     <td>평점</td>
@@ -52,8 +52,16 @@
             </table>
         </form>
     </fieldset>
+
     <div id="show"></div>
+
     <script>
+        //ckeditor 호출
+        CKEDITOR.replace("prod_desc", {
+            filebrowserUploadUrl: '../CkeditorServlet'
+        });
+
+        //ajax 호출
         $.ajax({
             url: '../GetItemServlet',
             dataType: 'json',
@@ -62,44 +70,51 @@
                 table = $('<table>').attr('border', 1).attr('id', 'tbl');
                 thead = $('<thead>');
                 $(thead).append(
-                    $('<tr>').append(
-                        $('<th>').text('상품ID'),
-                        $('<th>').text('상품명'),
-                        $('<th>').text('평가점수'),
-                        $('<th>').text('가격'),
-                        $('<th>').text('할인가격'),
-                        $('<th>').text('이미지')
-                    )
-                );
+                    $('<tr>').append($('<th>').text('상품ID'),
+                        $('<th>').text('상품명'), $('<th>').text('평가점수'),
+                        $('<th>').text('가격'), $('<th>').text('할인가격'),
+                        $('<th>').text('이미지')));
                 $(table).append(thead);
                 tbody = $('<tbody>');
                 result.forEach(function (val, ind) {
                     let tr = $('<tr>');
-                    $(tr).append(
-                        $('<td>').text(val.prodId),
+
+                    //prodImage에 이미지 없어서 엑박이면 안보여주기
+                    let img = $('<img>').attr({
+                        'src': '../images/' + val.prodImage,
+                        'width': '50px'
+                    });
+                    
+                    let a = $('<a>').attr('href', '../shop-homepage/item.html?id=' + val.prodId);
+                    if (val.prodImage != undefined)
+                        a.append(img);
+                    
+
+                    $(tr).append($('<td>').text(val.prodId),
                         $('<td>').text(val.prodName),
                         $('<td>').text(val.likeIt),
                         $('<td>').text(val.originPrice),
                         $('<td>').text(val.salePrice),
-                        $('<td>').html($('<a href="../shop-homepage/item.html?id='+val.prodId+'"><img width="50px" src="../images/' + val.prodImage +'"></a>'))
-                      
+                        /* $('<td>').html($('<a href="../shop-homepage/item.html?id=' + val
+							    .prodId + '"><img width="50px" src="../images/' + val
+                            .prodImage + '"></a>')) */
+                        $('<td>').append(a)
+
                     );
                     $(tbody).append(tr);
                 });
                 $(table).append(tbody);
 
-
                 $('#show').append(table);
 
-                $('th').eq(1).css('width', '200px')
-                    .end().eq(5).css('width', '120px');
+                $('th').eq(1).css('width', '200px').end().eq(5).css('width',
+                    '120px');
             },
             error: function (reject) {
                 console.log(reject);
             }
 
         });
-
 
         function formSubmit() {
             event.preventDefault();
@@ -125,14 +140,16 @@
                 dataType: 'json',
                 success: function (result) {
                     console.log(result);
-                    let tr = $('<tr>').append(
-                        $('<td>').text(result.prodId),
-                        $('<td>').text(result.prodName),
-                        $('<td>').text(result.likeIt),
-                        $('<td>').text(result.originPrice),
-                        $('<td>').text(result.salePrice),
-                        $('<td>').html('<img width="50px" src="../images/' + result.prodImage + '">')
-                    );
+                    let tr = $('<tr>')
+                        .append(
+                            $('<td>').text(result.prodId),
+                            $('<td>').text(result.prodName),
+                            $('<td>').text(result.likeIt),
+                            $('<td>').text(result.originPrice),
+                            $('<td>').text(result.salePrice),
+                            $('<td>').html($('<a href="../shop-homepage/item.html?id=' + result.prodId +
+                                '"><img width="50px" src="../images/' + result.prodImage + '"></a>'))
+                        );
                     $('#tbl>tbody').append(tr);
 
                     //입력값 초기화
