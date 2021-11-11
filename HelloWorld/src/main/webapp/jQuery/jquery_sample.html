@@ -73,15 +73,12 @@
                 return;
             }
 
-            // let findWord = $('#field>div');
-            // for(let origin of findWord){
-            //     if($(origin).text() == val)
-            //         $(origin).css('visibility', 'hidden');
-            // }
-            
-            let findWord = $(`#field>div:contains(${val})`).css('visibility','hidden');
-       
-            
+            let findWord = $('#field>div');
+            for(let origin of findWord){
+                if($(origin).text() == val)
+                    $(origin).css('visibility', 'hidden');
+            }
+           
             $('#addValue').val('');
         }
 
