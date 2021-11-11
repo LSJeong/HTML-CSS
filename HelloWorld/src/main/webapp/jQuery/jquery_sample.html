@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jquery/jquery_sample.html</title>
+    <script src="jquery-3.6.0.min.js"></script>
+    <style>
+        #field {
+            border: 1px solid black;
+        }
+
+        #field>div {
+            display: inline-block;
+            width: 120px;
+            height: 35px;
+            margin: 5px;
+            text-align: center;
+            line-height: 35px;
+            background-color: cornflowerblue;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="addValue">
+    <button id="addBtn">추가</button>
+    <button id="delBtn">삭제</button>
+    <div id="field"></div>
+
+    <script>
+        let sample =
+            `There are plenty of signs of the growing gap between the information rich and the information poor in our evermore complex, technology driven, so-called information society. If you do not have access to information of knowledge as a new economic resource, you will be doomed to remain in the underclass of what are otherwise visibly affluent societies. Surely, education and access to "know-how" have always been a key to upward social mobility, but it seems that in our time with the structural changes in the post-industrial economy, the lack of these capabilities leaves no feasible alternatives.`;
+        var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+
+        let latterAry = sample.replace(reg, '').replace(' ', '').split(' ');
+        change(latterAry);
+
+        $('#addValue').on('keyup', function () {
+            if (event.keyCode == 13) {
+                delFunc();
+            }
+        });
+
+        $('#addBtn').on('click', addFunc);
+        $('#delBtn').on('click', delFunc);
+
+        function addFunc() {
+            let val = $('#addValue').val();
+            console.log(val);
+            if (val == null || val == '') return;
+            let aryval = val.replace(reg, '').replace(' ', '').split(' ');
+            change(aryval);
+           
+        }
+
+        function delFunc() {
+            let val = $('#addValue').val();
+            if (val == null || val == '') return;
+            if(reg.test(val)){
+                alert('특수문자는 입력할 수 없습니다.');
+                $('#addValue').val('');
+                return;
+            }
+            let findWord = $('#field>div');
+
+            for(let origin of findWord){
+                if($(origin).text() == val)
+                    $(origin).css('visibility', 'hidden');
+            }
+            
+            $('#addValue').val('');
+        }
+
+        function change(ary) {
+            for (let i of ary) {
+                let div = $('<div>').text(i);
+                $('#field').append(div);
+            }
+            $('#addValue').val('');
+        }
+
+    </script>
+</body>
+
+</html>
