@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery/login.html</title>
+    <script src='jquery-3.6.0.min.js'></script>
+    <style>
+        #container {
+            background-color: pink;
+            width: 500px;
+            height: 500px;
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        #context{
+            margin-top:200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="context">
+            아이디 &nbsp;&nbsp;: <input type="text" id="id"> <br>
+            비밀번호 : <input type="password" id="pwd"><br><br>
+            <input type="submit" value="로그인" id="ok">
+            <input type="reset" value="취소" id="reset">
+        </div>
+    </div>
+
+    <script>
+        const members = [{
+                id: "hong1",
+                name: "홍길동",
+                password: "1111"
+            },
+            {
+                id: "lsj",
+                name: "이소정",
+                password: "2222"
+            },
+            {
+                id: "choi",
+                name: "최수진",
+                password: "1234"
+            },
+            {
+                id: "kimm",
+                name: "김연경",
+                password: "1545"
+            }
+        ];
+
+        $('#ok').click(function () {
+            let id = $('#id').val();
+            let pwd = $('#pwd').val();
+
+          
+            let chk = members.filter(function (val, ind) {
+                return val.id === id && (val.password) === pwd;
+            });
+            
+
+            if(chk.length == "1"){
+                alert(chk[0].name + '님 환영합니다!');
+                sessionStorage.setItem('sessionName',chk[0].name);
+                localStorage.setItem('localName',chk[0].name);
+                location.href = 'person.html';
+                // localStorage.userName = chk[0].name
+                // localStorage['userpw'] = chk[0].password
+            }
+            else{
+                alert('사용자 정보를 확인하세요!!!');
+            }
+            $('#id').val('');
+            $('#pwd').val('');
+         });
+
+
+
+        $('#reset').click(function () {
+            $('#id').val('');
+            $('#pwd').val('');
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery/cal.html</title>
+    <script src='jquery-3.6.0.min.js'></script>
+    <style>
+        .flex-container {
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #60b99a;
+            margin: 10px;
+
+            display: flex;
+            justify-content: space-around;
+            flex-direction: row;
+            flex-wrap: wrap;
+            /* overflow: auto; */
+        }
+
+        .flex-item {
+            width: 45px;
+            margin: 10px;
+            padding: 20px;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            background-color: #4585b1;
+            font-size: x-large;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .show {
+            width: 90vw;
+            height: 40px;
+            font-size: xx-large;
+            font-weight: bold;
+            text-align: right;
+            padding-right: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex-container">
+        <div class="flex-item show"></div>
+        <div class="flex-item">1</div>
+        <div class="flex-item">2</div>
+        <div class="flex-item">3</div>
+        <div class="flex-item">+</div>
+        <div class="flex-item">4</div>
+        <div class="flex-item">5</div>
+        <div class="flex-item">6</div>
+        <div class="flex-item">-</div>
+        <div class="flex-item">7</div>
+        <div class="flex-item">8</div>
+        <div class="flex-item">9</div>
+        <div class="flex-item">*</div>
+        <div class="flex-item">0</div>
+        <div class="flex-item">C</div>
+        <div class="flex-item">=</div>
+        <div class="flex-item">/</div>
+    </div>
+
+
+    <script>
+        $('.flex-item').on('click', calculatorFnc);
+        let oper;
+
+        function calculatorFnc() {
+            let inputValue = $(this).text();
+            let currText;
+            if (inputValue == 'C') {
+                $('.show').text('0');
+                return;
+            } else if (inputValue == '=') {
+                let show = $('.show').text();
+
+                let val = show.indexOf(oper);
+                let first = show.slice(0, val);
+                let second = show.slice(val + 1);
+                console.log(first);
+                console.log(second);
+                console.log(oper);
+                cal(first, second, oper);
+            } else {
+
+                currText = $('.show').text();
+               
+               if(currText == "NaN"){
+                   console.log($('.show').text())
+                    $('.show').text('0');
+                    currText= $('.show').text(inputValue);
+               }
+                if (currText == 0) {
+                    currText = currText.slice(1);
+                }
+
+                if (inputValue == '+' || inputValue == '-' || inputValue == '*' || inputValue == '/') {
+                    oper = inputValue;
+                    console.log(oper);
+                }
+
+                currText += $(this).text();
+
+                $('.show').text(currText);
+            }
+
+        }
+
+        function cal(first, second, oper) {
+            let endValue;
+            if (oper == '+') {
+                endValue = parseInt(first) + parseInt(second);
+            } else if (oper == '-') {
+                endValue = parseInt(first) - parseInt(second);
+            } else if (oper == '*') {
+                endValue = parseInt(first) * parseInt(second);
+            } else if (oper == '/') {
+                endValue = parseInt(first) / parseInt(second);
+            }
+
+            $('.show').text(endValue);
+        }
+    </script>
+</body>
+
+</html>

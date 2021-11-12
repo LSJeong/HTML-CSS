@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery/addMember.html</title>
+    <script src='jquery-3.6.0.min.js'></script>
+    <style>
+        #container {
+            background-color: rgb(245, 206, 212);
+            width: 800px;
+            height: 800px;
+        }
+
+        #tabledraw {
+            background-color: rgb(175, 174, 174);
+            width: 800px;
+            height: 800px;
+        }
+
+        #addText {
+            display: inline-block;
+            background-color: hotpink;
+        }
+
+        #addbtn {
+            display: inline-block;
+        }
+        #tabl{
+            margin: 50px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="addText">
+            <div>
+                <label>사용자아이디</label>
+                <input type="text" id="id">
+            </div>
+            <div>
+                <label>사용자이름</label>
+                <input type="text" id="name">
+            </div>
+            <div>
+                <label>이메일</label>
+                <input type="text" id="email">
+            </div>
+            <div>
+                <label>전화번호</label>
+                <input type="text" id="phone">
+            </div>
+            <div>
+                <label>생년월일</label>
+                <input type="date" id="birth">
+            </div>
+        </div>
+        <div id="addbtn"><button id="btn">등록</button></div>
+        <div id="tabledraw">
+
+        </div>
+    </div>
+
+
+    <script>
+        //member 전체리스트
+        $.ajax({
+            url: '../AddMemberServlet',
+            dataType: 'json',
+            success: function (result) {
+                let table = $('<table id="tbl">').attr('border', '1');
+                let thead = $('<thead>');
+                let tr = $('<tr>');
+                let title = ['순번', '선택', '아이디', '이름', '이메일', '전화번호', '생년월일'];
+                for (field of title) {
+                    let th = $('<th>').text(field);
+                    tr.append(th);
+                }
+                thead.append(tr);
+                thead.css("color", "blue");
+
+
+                let tbody = $('<tbody>');
+                table.append(tbody, thead);
+
+
+                $(result).each(function (ind, val) {
+                    let tr = createTbody(ind, val);
+                    tbody.append(tr);
+                });
+
+                $('#tabledraw').append(table);
+
+                console.log($('tbody>tr:last-child td').eq(0).text());
+            },
+            error: function (reject) {
+                console.log(reject);
+            }
+        });
+
+        function createTbody(ind, val) {
+            let tr = $('<tr>');
+            let td = $('<td>').text(ind + 1);
+            tr.append(td);
+
+            td = $('<td>').append($('<input type="checkbox">'));
+            tr.append(td);
+
+            for (field in val) {
+
+                td = $('<td>').text(val[field]);
+                tr.append(td);
+            }
+            tr.mouseover(function () {
+                $(this).css({
+                    "background-color": "yellow",
+                    "color": "red"
+                });
+            });
+            tr.mouseout(function () {
+                $(this).css({
+                    "background-color": '',
+                    "color": ''
+                });
+            });
+            return tr;
+        }
+
+
+        $('#btn').on('click', addMeberFnc);
+
+        function addMeberFnc() {
+
+            if ($('#id').val() == null || $('#id').val() == '') {
+                alert('아이디를 입력하세요!!');
+                return;
+            } else if ($('#name').val() == null || $('#name').val() == '') {
+                alert('이름을 입력하세요!!');
+                return;
+            } else if ($('#email').val() == null || $('#email').val() == '') {
+                alert('이메일을 입력하세요!!');
+                return;
+            } else if ($('#phone').val() == null || $('#phone').val() == '') {
+                alert('전화번호를 입력하세요!!');
+                return;
+            }
+
+            let id = $('#id').val();
+            let name = $('#name').val();
+            let email = $('#email').val();
+            let phone = $('#phone').val();
+            let birth = $('#birth').val();
+
+
+
+            $.ajax({
+                url: '../AddMemberServlet',
+                type: 'post',
+                data: {
+                    "id": id,
+                    "name": name,
+                    "email": email,
+                    "phone": phone,
+                    "birth": birth
+                },
+                dataType: 'json',
+                success: function (result) {
+                    console.log(result);
+					let index = parseInt($('tbody>tr:last-child td').eq(0).text());
+                    let tr = $('<tr>')
+                        .append(
+                            $('<td>').text(index + parseInt(1)),
+                            $('<td>').append($('<input type="checkbox">')),
+                            $('<td>').text(result.id),
+                            $('<td>').text(result.name),
+                            $('<td>').text(result.email),
+                            $('<td>').text(result.phone),
+                            $('<td>').text(result.birth)
+
+                        );
+                    $('#tbl>tbody').append(tr);
+                },
+                error: function (reject) {
+                    console.log(reject);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

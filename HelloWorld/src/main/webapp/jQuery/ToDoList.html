@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery/ToDoList.html</title>
+    <script src="jquery-3.6.0.min.js"></script>
+    <style>
+        html {
+            background-color: lightskyblue;
+        }
+
+        #container {
+            width: 50%;
+            height: 700px;
+            text-align: center;
+            display: flex;
+        }
+
+        #memo {
+            width: 25%;
+            height: 30px;
+        }
+
+        #addbtn {
+            width: 20%;
+            height: 35px;
+            color: blue;
+        }
+
+        #todo {
+            width: 50%;
+            background-color: white;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 200px;
+            height: 80%;
+        }
+
+        ul {
+            list-style: none;
+            
+            width: 60%;
+            padding: 0;
+            margin: auto;
+            margin-top: 40px;
+        }
+        ul>li{
+            border: skyblue 1px solid;
+            height: 40px;
+            line-height: 40px;
+            margin: 3px;
+        }
+        h2 {
+            display: inline-block;
+        }
+        .xbtn{
+            border-radius: 50%;
+            border: 0;
+            float: right;
+            margin-top: 15px;
+            color: red;
+        }
+        span{
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="todo">
+            <div>
+                <h2>TO Do List</h2>
+                <span>(0)</span>
+            </div>
+            <div id="content">
+                <input type="text" id="memo">
+                <button id="addbtn">ADD Task</button>
+                <ul class="list">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let btn;
+        $('#addbtn').click(function () {
+            let memo = $('#memo').val();
+            if(memo == null || memo == '') {
+                alert('내용을 입력해주세요!!');
+                return;
+            }
+            btn = $('<button class="xbtn">').text('x');
+            btn.click(delFnc);
+            $('.list').append($('<li>').text(memo).append(btn));    
+            console.log($('li').length);
+            $('span').text('('+$('li').length+')');
+
+            $('#memo').val('');
+        })
+
+
+        function delFnc(){
+            console.log($(this));
+            $(this).parent().remove();
+        }
+
+    </script>
+
+</body>
+
+</html>
